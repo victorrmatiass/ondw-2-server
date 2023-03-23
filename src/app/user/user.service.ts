@@ -22,9 +22,9 @@ export class UserService {
     });
   }
 
-  async createNew(data) {
+  async createNew(data: CreateUserDto) {
     try {
-      data.password = await this.hashPassword(data.password);
+      data.password = this.hashPassword(data.password);
       return await this.prismaService.user.create({ data });
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -59,7 +59,7 @@ export class UserService {
     });
   }
 
-  async hashPassword(password: string) {
+  hashPassword(password: string) {
     const salt = genSaltSync(10);
     return hashSync(password, salt);
   }
